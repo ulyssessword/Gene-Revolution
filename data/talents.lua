@@ -72,6 +72,8 @@ newTalent{
 	end,
 }
 
+-- This is a comment
+
 newTalent{
 	name = "Power Sweep",
 	type = {"role/combat", 1},
