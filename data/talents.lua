@@ -255,3 +255,29 @@ newTalent{
 		return "With great ferocity, you devour a portion of your target, healing yourself for 50%% of the damage.  The damage is doubled if the target is covered with acid."
 	end,
 }
+
+newTalent{
+	name = "Zap",
+	type = {"role/combat", 1},
+	points = 1,
+	bioenergy = 30, -- 2.33 uses, 3 turns/use to recover
+	sync = 10,
+	range = 1,
+	requires_target = true,
+	target = function(part, t)
+		return {type="hit", range=part:getTalentRange(t)}
+	end,
+	effects = function(actor, part, t)
+		local tg = part:getTalentTarget(t)
+		local x, y, target = actor:getTarget(tg)
+		if not x or not y or not target then return nil end
+		if core.fov.distance(actor.x, actor.y, x, y) > 1 then return nil end
+		local eff = actor:getSyncEff()
+		
+		actor:melee_attack_effects(target, {attack_with = part, dam_mod = ( 2 + eff)})
+	end,
+	info = function(actor, part, t)
+		return "A powerful jolt of electrical energy.  "
+	end,
+}
+
